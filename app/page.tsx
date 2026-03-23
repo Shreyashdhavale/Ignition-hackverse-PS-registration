@@ -44,6 +44,7 @@ const TRACK_META = [
 ];
 
 const INITIAL_FORM: FormState = { teamName: "", registrationId: "", psId: "" };
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5000";
 
 // ─── Custom Tooltip ───────────────────────────────────────────────────────────
 
@@ -154,7 +155,7 @@ export default function HackathonRegistration() {
   const fetchStats = async (showSpinner = false) => {
     if (showSpinner) setRefreshing(true);
     try {
-      const res  = await axios.get("http://localhost:5000/stats");
+      const res  = await axios.get(`${API_BASE_URL}/stats`);
       const data = res.data;
       setStats(
         TRACK_META.map((t) => ({
@@ -190,7 +191,7 @@ export default function HackathonRegistration() {
     try {
       // Server derives the track from psId via ProblemStatement relation —
       // we only send the three fields the backend expects.
-      const res = await axios.post("http://localhost:5000/register", {
+      const res = await axios.post(`${API_BASE_URL}/register`, {
         teamName:       form.teamName.trim(),
         registrationId: form.registrationId.trim(),
         psId:           form.psId.trim(),
